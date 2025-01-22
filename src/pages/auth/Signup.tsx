@@ -1,11 +1,12 @@
 import { Link } from "react-router";
-import react from '../../assets/react.svg'
+import start from '../../assets/start.png'
+import google from  '../../assets/google.png'
 
 function Signup() {
 	return (
 	  <div className="flex items-center justify-center min-h-screen">
 		<div className="w-full max-w-lg py-10 sm:px-8 px-4 bg-white rounded-lg md:shadow sm:border sm:border-gray-300">
-		<img src={react} className="w-20 mb-8" />
+		<img src={start} className="w-20 mb-8" />
 		  <h2 className="text-2xl font-normal text-gray-900">Create an Account</h2>
 		  <p className="text-base mt-8 mb-10 font-normal">
 			Have an account?{' '}
@@ -66,12 +67,7 @@ function Signup() {
 				Sign up
 			  </button>
 			</div>
-			<p className="text-center text-base text-black font-medium">
-			  or sign up with
-			</p>
-			<p className="font-bold p-2 border-2 border-black w-14 mx-auto text-2xl text-center">
-			  G
-			</p>
+			<img src={google} className="w-20 mx-auto my-12" />
 		  </form>
 		</div>
 	  </div>

@@ -1,13 +1,14 @@
 import { Link } from "react-router";
-import react from '../../assets/react.svg'
+import start from '../../assets/start.png'
+import google from  '../../assets/google.png'
 
 function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-lg py-10 sm:px-8 px-4 bg-white rounded-lg md:shadow sm:border sm:border-gray-300">
-      <img src={react} className="w-20 mb-8" />
+      <div className="w-full max-w-lg py-7 sm:px-8 px-4 bg-white rounded-lg md:shadow sm:border sm:border-gray-300">
+      <img src={start} className="w-20 md:mb-4 mb-8" />
         <h2 className="text-2xl font-normal text-gray-900">Sign In</h2>
-        <p className="text-base mt-8 mb-10 font-normal">
+        <p className="text-base mt-8 md:mb-7 mb-10 font-normal">
           New to Start-Up?{' '}
           <Link to="/signup" className="text-blue-500 underline">Create an Account</Link>
         </p>
@@ -69,9 +70,7 @@ function Login() {
           <p className="text-center text-base text-black font-medium">
             or sign in with
           </p>
-          <p className="font-bold p-2 border-2 border-black w-14 mx-auto text-2xl text-center">
-            G
-          </p>
+          <img src={google} className="w-20 mx-auto" />
           <p className="text-center text-base text-black font-normal">Forgot Password ? <Link to="/forgot-password" className="text-blue-500 underline">Click Here</Link></p>
         </form>
       </div>
