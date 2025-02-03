@@ -3,36 +3,36 @@ import { Link } from "react-router";
 const LevelFiveLayout = () => {
   return (
     <div className="flex justify-center py-10">
-      <div className="bg-purple-200 rounded-xl lg:max-w-lg md:max-w-md max-w-sm w-full">
+      <div className="bg-purple-300 rounded-xl lg:max-w-lg md:max-w-md max-w-sm w-full">
         <h1 className="text-3xl rounded-t-xl pl-4 py-2 bg-purple-600 text-white font-bold">
           500 LEVEL
         </h1>
 
-        <div className="flex items-center justify-between text-black rounded-3xl py-2 px-3 bg-white mx-2 mt-3">
-          <div className="">
-            <h2 className="text-base font-bold">MTS 501</h2>
-            <p className="text-sm">1st Semester</p>
-          </div>
-          <p className="rotate-90">▼</p>
+        <div className="px-4 py-2 border rounded-md bg-purple-50 hover:bg-purple-100 transition-all mt-3 mx-2">
+          <h3 className="text-lg font-bold text-purple-800">GNS 102</h3>
+          <p className="text-sm text-gray-900">Use Of english I</p>
+          <span className="text-xs text-gray-700 italic">
+            Ist Semester
+          </span>
         </div>
 
-        <div className="flex items-center justify-between text-black rounded-3xl py-2 px-3 bg-white mx-2 mt-3">
-          <div className="">
-            <h2 className="text-base font-bold">MTS 501</h2>
-            <p className="text-sm">1st Semester</p>
-          </div>
-          <p className="rotate-90">▼</p>
+        <div className="px-4 py-2 border rounded-md bg-purple-50 hover:bg-purple-100 transition-all mt-3 mx-2">
+          <h3 className="text-lg font-bold text-purple-800">MTS 102</h3>
+          <p className="text-sm text-gray-900">Introduction to Mathematics I</p>
+          <span className="text-xs text-gray-700 italic">
+            Ist Semester
+          </span>
         </div>
 
-        <div className="flex items-center justify-between text-black rounded-3xl py-2 px-3 bg-white mx-2 mt-3">
-          <div className="">
-            <h2 className="text-base font-bold">MTS 501</h2>
-            <p className="text-sm">1st Semester</p>
-          </div>
-          <p className="rotate-90">▼</p>
+        <div className="px-4 py-2 border rounded-md bg-purple-50 hover:bg-purple-100 transition-all mt-3 mx-2">
+          <h3 className="text-lg font-bold text-purple-800">PHY 102</h3>
+          <p className="text-sm text-gray-900">General Physics I</p>
+          <span className="text-xs text-gray-700 italic">
+            Ist Semester
+          </span>
         </div>
 
-        <Link to='/level-five' className=" bg-purple-400 my-5 mx-3 px-3 py-2 rounded-xl inline-block">
+        <Link to='/500CourseList' className=" bg-white my-5 mx-3 font-bold text-purple-800 px-3 py-2 rounded-xl inline-block">
           See More
         </Link>
       </div>

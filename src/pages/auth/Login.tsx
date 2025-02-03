@@ -60,12 +60,15 @@ function Login() {
             </div>
           </div>
           <div>
-            <button
+            <Link
+              to='/home'>
+              <button
               type="submit"
               className="w-full px-4 py-2 text-lg font-normal text-white bg-black border border-transparent"
             >
               Sign in
-            </button>
+              </button>
+            </Link>
           </div>
           <p className="text-center text-base text-black font-medium">
             or sign in with
