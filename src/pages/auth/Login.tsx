@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 import start from '../../assets/start.png'
 import google from  '../../assets/google.png'
+import { useState } from "react";
 
 function Login() {
+  const [inputUserName, setInputUsername] = useState("")
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-full max-w-lg py-7 sm:px-8 px-4 bg-white rounded-lg md:shadow sm:border sm:border-gray-300">

@@ -1,26 +1,54 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import start from "../../assets/start.png";
 import google from "../../assets/google.png";
 import faculties from "../../util/Department.js";
+import { useAuth } from "../../stores/Context.js";
 
-function Signup({ onSignup }) {
+function Signup() {
+  const [inputUsername, setInputUsername] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
 
-  const handleFacultyChange = (e) => {
+  const levels = [
+    "100 Level",
+    "200 Level",
+    "300 Level",
+    "400 Level",
+    "500 Level",
+  ];
+  const { setName, setDepartment, setFaculty, setLevel } = useAuth();
+  const navigate = useNavigate();
+
+  const handleFacultyChange = (e: React.FormEvent) => {
     setSelectedFaculty(e.target.value);
     setSelectedDepartment(""); // Reset department when faculty changes
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedDepartment) {
       localStorage.setItem("userDepartment", selectedDepartment); // Save department
-      onSignup(selectedDepartment); // Notify parent about signup
     } else {
       alert("Please select a department.");
     }
+
+    if (inputUsername.trim() === "") {
+      alert("Please enter a username");
+      return;
+    }
+
+    setName(inputUsername); // Store the username globally
+    setDepartment(selectedDepartment);
+    setFaculty(selectedFaculty);
+    setLevel(selectedLevel)
+    navigate("/home"); // Redirect after login
+
+    localStorage.setItem("userName", inputUsername);
+    localStorage.setItem("userDepartment", selectedDepartment);
+    localStorage.setItem("userFaculty", selectedFaculty);
+    localStorage.setItem("userLevel", selectedLevel);
   };
 
   return (
@@ -47,6 +75,8 @@ function Signup({ onSignup }) {
             <input
               name="Firstname"
               type="text"
+              value={inputUsername}
+              onChange={(e) => setInputUsername(e.target.value)}
               required
               className="w-full px-3 py-2 mt-1 border-2 border-black sm:text-sm"
             />
@@ -117,6 +147,30 @@ function Signup({ onSignup }) {
               </select>
             </div>
           )}
+          <div>
+            <label className="block mb-2 text-sm font-medium">Level</label>
+            <select
+              className="w-full p-2 border-2 border-black"
+              value={selectedLevel}
+              onChange={(e) => setSelectedLevel(e.target.value)}
+            >
+              <option value="" disabled>
+                Select Level
+              </option>
+              {levels.map((level, index) => (
+                <option key={index} value={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
+
+            {selectedLevel && (
+              <p className="mt-4 text-lg font-semibold text-gray-700">
+                You selected:{" "}
+                <span className="text-purple-600">{selectedLevel}</span>
+              </p>
+            )}
+          </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -134,14 +188,12 @@ function Signup({ onSignup }) {
             </div>
           </div>
           <div>
-            <Link to="/home">
-              <button
-                type="submit"
-                className="w-full px-4 py-2 text-lg font-normal text-white bg-black border border-transparent"
-              >
-                Sign up
-              </button>
-            </Link>
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-lg font-normal text-white bg-black border border-transparent"
+            >
+              Sign up
+            </button>
           </div>
           <img src={google} className="w-20 mx-auto my-12" />
         </form>

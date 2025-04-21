@@ -6,12 +6,12 @@ const ForgotPassword = () => {
       <div className="w-full max-w-md py-10 sm:px-8 px-4  rounded-lg md:shadow sm:border sm:border-gray-300">
 		<img src={start} className="w-20 mb-8" />
         <h2 className="text-2xl font-semibold text-gray-900 mb-2">Forgot Password ?</h2>
-        <p className="text-sm font-medium text-blue-900">We sent a code to you. Check you email</p>
+        <p className="text-sm font-medium text-red-900">We sent a code to you. Check you email</p>
         <form className="mt-8 space-y-6">
           <div>
             <label
               htmlFor="email"
-              className="block text-sm underline text-blue-500 text-right font-normal"
+              className="block text-sm underline text-blue-500 font-normal"
             >
               Enter your email
             </label>

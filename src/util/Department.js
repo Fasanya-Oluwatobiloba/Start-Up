@@ -1,7 +1,17 @@
 const faculties = [
   {
-    name: "School Of System and Electrical Engineering",
+    name: "School Of Electrical and System Engineering",
     acronym: "SESE",
+    departments: [
+      "Mechatronics Engineering",
+      "Electrical Engineering",
+      "Biomedical Engineeering",
+      "Chemical Enginnering",
+    ],
+  },
+  {
+    name: "School Of computing",
+    acronym: "SOC",
     departments: [
       "Computer Science",
       "Information Technology",
@@ -11,8 +21,8 @@ const faculties = [
     ],
   },
   {
-    name: "School Of Infrastructural, Mineral and Manufacturing Engineering",
-    acronym: "SIMME",
+    name: "School Of Environmental Technology",
+    acronym: "SET",
     departments: [
       "Architecture",
       "Building",
@@ -24,23 +34,8 @@ const faculties = [
     ],
   },
   {
-    name: "School Of Agricultural and Agricultural Technology",
-    acronym: "SAAT",
-    departments: [
-      "Agricultural & Resource Economics",
-      "Agricultural Extension & Comm. Tech.",
-      "Animal Production And Health",
-      "Crop, Soil & Pest Mangt.",
-      "Ecotourism & Wildlife Mangt",
-      "Fisheries & Aquaculture",
-      "Food Science & Tech.",
-      "Forestry & Wood Tech.",
-      "Nutrition And Dietetics",
-    ],
-  },
-  {
-    name: "School Of Environment technology",
-    acronym: "SET",
+    name: "School Of Eearth and Mineral Science",
+    acronym: "SEMS",
     departments: [
       "Applied Geophysics",
       "Applied Geology",
@@ -50,8 +45,8 @@ const faculties = [
     ],
   },
   {
-    name: "School Of Earth and Mineral Science",
-    acronym: "SEMS",
+    name: "School Of Agriculture and agricultural Technology",
+    acronym: "SAAT",
     departments: [
       "Agricultural & Resource Economics",
       "Agricultural Extension & Comm. Tech.",
@@ -68,10 +63,10 @@ const faculties = [
     name: "School Of Logistics and Innovation Technology",
     acronym: "SLIT",
     departments: [
-      "Department Of Business Information Technology",
-      "Department Of Entrepreneurship Management Tech.",
-      "Department Of Project Management Technology",
-      "Department Of Logistics And Transport Technology",
+      "Business Information Technology",
+      "Entrepreneurship Management Tech.",
+      "Project Management Technology",
+      "Logistics And Transport Technology",
       "Securities And Investment Management Technology",
     ],
   },
@@ -84,17 +79,17 @@ const faculties = [
     name: "School Of Basic Medical Science",
     acronym: "SBMS",
     departments: [
-      "Department Of Anatomy",
-      "Department Of Biomedical Technology",
-      "Department Of Medical Laboratory Science",
-      "Department Of Physiology",
+      "Anatomy",
+      "Biomedical Technology",
+      "Medical Laboratory Science",
+      "Physiology",
       "Medicine And Surgery (Pre-Clinicals)",
-      "Department Of Public Health",
+      "Public Health",
     ],
   },
   {
-    name: "School Of Life and Biological Science",
-    acronym: "SLBS",
+    name: "School Of Life  Science",
+    acronym: "SLS",
     departments: ["Biology", "Biochemistry", "Microbiology"],
   },
 ];

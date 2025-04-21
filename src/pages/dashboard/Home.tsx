@@ -1,64 +1,203 @@
 import { Link } from "react-router";
+import { useAuth } from "../../stores/Context.js";
+import { useEffect, useState } from "react";
+import { Pencil } from "lucide-react"; // Import edit icon
+import Modal from "../../UI/Modal.js";
 
 const HomePage = () => {
+  const {
+    name,
+    department,
+    faculty,
+    level,
+    setName,
+    setDepartment,
+    setFaculty,
+    setLevel,
+  } = useAuth();
+  const [profileImage, setProfileImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const storedImage = localStorage.getItem("userImage");
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    const storedDepartment = localStorage.getItem("userDepartment");
+    const storedFaculty = localStorage.getItem("userFaculty");
+    const storedLevel = localStorage.getItem("userLevel");
+    const storedImage = localStorage.getItem("userImage");
+
+    if (storedName) setName(storedName);
+    if (storedDepartment) setDepartment(storedDepartment);
+    if (storedFaculty) setFaculty(storedFaculty);
+    if (storedLevel) setLevel(storedLevel);
+    if (storedImage) setProfileImage(storedImage);
+  }, [setName, setDepartment, setFaculty, setLevel]);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+        localStorage.setItem("userImage", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="bg-gray-200 min-h-screen flex flex-col justify-between">
       {/* Navbar */}
       <header className="flex justify-between items-center px-4 py-3 bg-black text-white">
-        <div className="font-bold text-lg">LOGO</div>
-        <div className="flex items-center space-x-4">
-          <button>
-            <i className="fas fa-moon"></i> {/* Replace with an actual moon icon */}
-          </button>
-          <button>
-            <i className="fas fa-bars"></i> {/* Replace with an actual menu icon */}
-          </button>
+        <div className="font-bold text-xl text-gray-200 italic">DouLearn</div>
+        {/* User Info */}
+        <div className="flex items-center space-x-2 relative">
+          {/* User Name (Desktop) */}
+          <span className="hidden md:block text-whi">John Doe</span>
+          {/* User Icon */}
+          <p
+            onClick={() => setIsModalOpen(true)}
+            className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center cursor-pointer"
+          >
+            👤
+          </p>
+
+          {/* Profile Dropdown */}
+          <>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+              <p className="text-center text-lg pt-4 pb-1 font-semibold rounded-t-2xl text-gray-800 bg-purple-400">
+                {name}
+              </p>
+              <div className="border-t border-black px-6 py-3">
+                <ul className="text-center text-gray-700 space-y-3">
+                  <li>
+                    <Link
+                      to="/forgot-password"
+                      className="py-2 hover:underline hover:font-semibold text-cente"
+                    >
+                      Forgot password ?
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/home"
+                      className="py-2 hover:underline hover:font-semibold text-center"
+                    >
+                      Manage your subscription
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="hover:text-red-500 font-medium cursor-pointer transition"
+                    >
+                      Log out
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </Modal>
+          </>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow flex flex-col items-center justify-center text-center p-4 bg-purple-200">
-        <h1 className="text-4xl font-serif text-black">
-          Hello <br />
-          <span className="text-blue-600 font-bold">TOBY</span>
+      <main className="flex-grow flex flex-col items-center py-6 px-4 bg-purple-200">
+        {/* Profile Image Upload */}
+        <div className="relative mt-4">
+          <div className="relative">
+            {profileImage ? (
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="w-48 h-48 object-cover rounded-full shadow-lg border-2 border-gray-300"
+              />
+            ) : (
+              <div className="w-56 h-56 flex items-center justify-center bg-white border-2 border-purple-500 rounded-full shadow-md text-gray-600">
+                No Image
+              </div>
+            )}
+
+            {/* Edit Icon */}
+            {profileImage && (
+              <label className="absolute bottom-1 right-1 bg-purple-600 text-white p-1 rounded-full shadow-lg cursor-pointer hover:bg-purple-700 transition">
+                <Pencil size={16} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+            )}
+          </div>
+        </div>
+        {/* Upload Button - Hidden Once Image is Uploaded */}
+        {!profileImage && (
+          <label className="mt-2 bg-purple-600 text-white px-2 py-1 rounded-full text-sm cursor-pointer hover:bg-purple-700 transition">
+            Upload Image
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+          </label>
+        )}
+
+        <h1 className="text-xl font-serif text-black mt-6">
+          <span className="text-blue-600 font-bold">{name || "Guest"}</span>
         </h1>
-        <Link to='/courses' className="mt-6 px-8 py-3 bg-gradient-to-r from-orange-400 to-yellow-500 text-white font-semibold text-lg rounded-full flex items-center shadow-lg hover:scale-105 transform transition">
+
+        <div className="mt-12 text-gray-700 text-xl font-medium">
+          <p>
+            {" "}
+            <span className="text-purple-700 text-2xl mb-5">Faculty:</span>{" "}
+            {faculty}
+          </p>
+          <br></br>
+          <p>
+            {" "}
+            <span className="text-purple-700 text-2xl mb-5">Dept:</span>{" "}
+            {department}
+          </p>{" "}
+          <br></br>
+          <p>
+            {" "}
+            <span className="text-purple-700 text-2xl">Level:</span> {level}
+          </p>{" "}
+          <br></br>
+        </div>
+
+        <Link
+          to="/courses"
+          className="mt-6 px-8 py-3 bg-gradient-to-r from-orange-400 to-yellow-500 text-white font-semibold text-lg rounded-full flex items-center shadow-lg hover:scale-105 transition"
+        >
           GET STARTED
-          <span className="ml-2">
-            <i className="fas fa-arrow-right"></i> {/* Replace with actual arrow icon */}
-          </span>
         </Link>
-        <p className="mt-6 text-gray-700 text-sm max-w-md">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed odio
-          felis, sollicitudin sit amet ligula sed, ornare pretium magna.
-          Praesent justo lectus, posuere id eleifend quis, volutpat in nisi.
-          Vestibulum ipsum turpis, suscipit sed accumsan ac, tempus quis nunc.
-          Maecenas molestie magna non enim aliquet, eget condimentum metus
-          pellentesque. Curabitur venenatis libero a quam tincidunt pellentesque.
-        </p>
       </main>
 
       {/* Footer / Bottom Navigation */}
-      <footer className="bg-purple-600 text-white">
-        <div className="flex justify-around items-center py-3">
-          <button className="flex flex-col items-center text-xs">
-            <img className="fas fa-home text-2xl" />
+      <footer className="bg-purple-600 text-white fixed bottom-0 right-0 left-0">
+        <div className="flex justify-around items-center py-5">
+          <Link to="/home" className="flex flex-col font-bold items-center text-xs">
+            <i className="fas fa-home text-2xl"></i>
             HOME
-          </button>
-          <Link to='/courses' className="flex flex-col items-center text-xs">
-            <i className="fas fa-book text-2xl"></i> {/* Replace with book icon */}
+          </Link>
+          <Link to="/courses" className="flex flex-col font-bold items-center text-xs">
+            <i className="fas fa-book text-2xl"></i>
             COURSES
           </Link>
-		  <button className="flex flex-col items-center text-xs">
-            <i className="fas fa-book text-2xl"></i> {/* Replace with book icon */}
-          </button>
-          <button className="flex flex-col items-center text-xs bg-white text-purple-600 rounded-full p-2 shadow-lg">
-            <i className="fas fa-briefcase text-2xl"></i> {/* Replace with briefcase icon */}
+          <Link
+            to="/pratice-question"
+            className="flex flex-col font-bold items-center text-xs bg-purple-600"
+          >
+            <i className="fas fa-briefcase text-2xl"></i>
             MOCK CBT
-          </button>
-          <button className="flex flex-col items-center text-xs">
-            <i className="fas fa-cog text-2xl"></i> {/* Replace with cog icon */}
-            SETTINGS
+          </Link>
+          <button className="flex flex-col font-bold items-center text-xs bg-purple-600">
+            <i className="fas fa-briefcase text-2xl"></i>
+            OTHERS
           </button>
         </div>
       </footer>

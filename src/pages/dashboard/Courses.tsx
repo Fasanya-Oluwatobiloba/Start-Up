@@ -1,25 +1,52 @@
 import { useState, useEffect } from "react";
-import PMT from "../../util/SLIT.js"; // Import course data
-import { Link } from "react-router";
+import Courses from "../../util/CourseOutine.js"; // Import course data
+import { useAuth } from "../../stores/Context";
+import { Link } from "react-router"; // Fix incorrect import
+import back from "../../assets/back.png";
 
 const CoursePage = () => {
   const [selectedLevel, setSelectedLevel] = useState("100 Level");
   const [selectedSemester, setSelectedSemester] = useState("1st Semester");
   const [visibleCourses, setVisibleCourses] = useState([]);
-  const [openSynopsisIndex, setOpenSynopsisIndex] = useState(null); // Track which synopsis is open
+  const [openSynopsisIndex, setOpenSynopsisIndex] = useState(null);
 
+  const { department, setDepartment } = useAuth(); // Get department from context
+  const [userCourses, setUserCourses] = useState();
+
+  // Load stored values on component mount
   useEffect(() => {
-    loadCourses(selectedLevel, selectedSemester);
-  }, [selectedLevel, selectedSemester]);
+    const storedDepartment = localStorage.getItem("userDepartment");
+
+    if (storedDepartment) setDepartment(storedDepartment);
+  }, [setDepartment]);
+
+  // Load department courses
+  useEffect(() => {
+    if (department) {
+      const deptData = Courses.find((dept) => dept.name === department);
+      if (deptData) {
+        setUserCourses(deptData.levels);
+      }
+    }
+  }, [department]);
+
+  // Load courses for selected level and semester
+  useEffect(() => {
+    if (userCourses) {
+      loadCourses(selectedLevel, selectedSemester);
+    }
+  }, [selectedLevel, selectedSemester, userCourses]);
 
   const loadCourses = (level, semester) => {
-    const levelData = PMT.find((dept) => dept.level === level);
+    const levelData = userCourses.find((lvl) => lvl.level === level);
     if (levelData) {
       const filteredCourses = levelData.courses.filter(
         (course) => course.semester === semester
       );
       setVisibleCourses(filteredCourses);
       setOpenSynopsisIndex(null); // Reset synopsis when switching levels or semesters
+    } else {
+      setVisibleCourses([]);
     }
   };
 
@@ -29,14 +56,20 @@ const CoursePage = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="bg-purple-200 shadow-2xl border-4 border-gray-300 max-w-md w-full min-h-screen">
-        <Link to="/" className="text-black text-lg p-3">
-          Back
-        </Link>
-        <div className="">
-          <h1 className="text-3xl italic p-6 font-bold text-purple-600 mb-4">
-            COURSES
-          </h1>
+      
+      <div className="bg-purple-200 shadow-2xl border-4 border-gray-300 w-full min-h-screen">
+        <div>
+          <div className="flex items-center ml-1">
+            <Link to="/home">
+              <img
+                src={back}
+                className="w-8 bg-purple-700 rounded-full p-2 mr-1"
+              />
+            </Link>
+            <h1 className="text-3xl italic pt-6 font-bold text-purple-600 mb-6">
+              Course Outline
+            </h1>
+          </div>
 
           {/* Level Selection Buttons */}
           <div className="flex flex-wrap gap-1 justify-center mb-4">
@@ -61,10 +94,10 @@ const CoursePage = () => {
             ))}
           </div>
 
-          {/* Courses Display */}
+          {/* Course List */}
           <div className="bg-purple-100 p-4 rounded-2xl shadow-lg">
+            {/* Semester Selection */}
             <div className="flex gap-4 mb-4">
-              {/* Semester Selection Buttons */}
               {["1st Semester", "2nd Semester"].map((semester) => (
                 <button
                   key={semester}
@@ -79,8 +112,6 @@ const CoursePage = () => {
                 </button>
               ))}
             </div>
-
-            {/* Courses Display */}
             {visibleCourses.length > 0 ? (
               visibleCourses.map((course, index) => (
                 <div
@@ -103,7 +134,7 @@ const CoursePage = () => {
                     </button>
                   </div>
 
-                  {/* Course Synopsis (Only One Open at a Time) */}
+                  {/* Course Synopsis */}
                   {openSynopsisIndex === index && (
                     <>
                       <p className="mt-2 text-lg text-gray-700 bg-white p-2 font-semibold rounded-lg shadow-inner">
@@ -112,6 +143,26 @@ const CoursePage = () => {
                       <p className="mt-2 text-sm text-gray-700 bg-white p-2 rounded-lg shadow-inner">
                         {course.synopsis}
                       </p>
+                      <div className="flex items-center justify-between gap-4">
+                        <button classNa9me="border-1 bg-white text-purple-700 text-sm rounded-lg my-5 py-2 px-2 font-bold">
+                          <a
+                            href="https://drive.google.com/drive/folders/1qPKgObrKPrPgSQ1bdYt21A8YTbNefm2F"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View PDF
+                          </a>
+                        </button>
+                        <button className="border-1 bg-white text-purple-700 text-sm rounded-lg my-5 py-2 px-2 font-bold">
+                          <a
+                            href="https://drive.google.com/drive/folders/1qPKgObrKPrPgSQ1bdYt21A8YTbNefm2F"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View Past Questions
+                          </a>
+                        </button>
+                      </div>
                     </>
                   )}
                 </div>
@@ -122,6 +173,7 @@ const CoursePage = () => {
               </p>
             )}
           </div>
+           {/* Footer / Bottom Navigation */}
         </div>
       </div>
     </div>
