@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Courses from "../../util/CourseOutine.js"; // Import course data
 import { useAuth } from "../../stores/Context";
-import { Link } from "react-router"; // Fix incorrect import
+import { Link } from "react-router-dom";
 import back from "../../assets/back.png";
 
 const CoursePage = () => {
@@ -144,7 +144,7 @@ const CoursePage = () => {
                         {course.synopsis}
                       </p>
                       <div className="flex items-center justify-between gap-4">
-                        <button classNa9me="border-1 bg-white text-purple-700 text-sm rounded-lg my-5 py-2 px-2 font-bold">
+                        <button className="border bg-white text-purple-700 text-sm rounded-lg my-5 py-2 px-2 font-bold">
                           <a
                             href="https://drive.google.com/drive/folders/1qPKgObrKPrPgSQ1bdYt21A8YTbNefm2F"
                             target="_blank"
