@@ -1,41 +1,58 @@
-// App.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import LevelModal from "../../components/LevelModal";
 import CourseModal from "../../components/CourseModal";
 import QuestionSettingsModal from "../../components/QuestionSettingModal";
 import TestPage from "../../components/TestPage";
-import questions from "../../util/question.js";
+import questions from "../../util/question.js"; // You can change to .ts if you convert the questions file
 
-// Function to get questions based on level and course code
-const getQuestions = (level, courseCode) => {
+// ==== Type Definitions ====
+type Question = {
+  question: string;
+  options: string[];
+  answer: string;
+};
+
+type Course = {
+  code: string;
+  title: string;
+  questions: Question[];
+};
+
+type LevelData = {
+  level: string;
+  courses: Course[];
+};
+
+// ==== Helper Function ====
+const getQuestions = (level: string, courseCode: string): Question[] => {
   console.log("Selected Level:", level);
   console.log("Selected Course:", courseCode);
 
-  const levelData = questions.find((item) => item.level === level);
+  const levelData: LevelData | undefined = questions.find(
+    (item: LevelData) => item.level === level
+  );
   console.log("Level Data:", levelData);
 
   if (levelData) {
-    const course = levelData.courses.find(
-      (course) => course.code === courseCode
-    );
+    const course = levelData.courses.find((c) => c.code === courseCode);
     console.log("Course Data:", course);
     return course ? course.questions : [];
   }
   return [];
 };
 
-export default function PraticeQuestion() {
-  const [step, setStep] = useState("level");
-  const [level, setLevel] = useState("");
-  const [course, setCourse] = useState("");
-  const [numQuestions, setNumQuestions] = useState(10);
-  const [startTest, setStartTest] = useState(false);
+// ==== Main Component ====
+export default function PracticeQuestion() {
+  const [step, setStep] = useState<"level" | "course" | "settings">("level");
+  const [level, setLevel] = useState<string>("");
+  const [course, setCourse] = useState<string>("");
+  const [numQuestions, setNumQuestions] = useState<number>(10);
+  const [startTest, setStartTest] = useState<boolean>(false);
 
   const handleStart = () => {
     setStartTest(true);
   };
 
-  // Use getQuestions to fetch the questions for the selected level and course
   const filteredQuestions = getQuestions(level, course).slice(0, numQuestions);
 
   return (
@@ -44,7 +61,7 @@ export default function PraticeQuestion() {
         <>
           {step === "level" && (
             <LevelModal
-              onSelect={(val) => {
+              onSelect={(val: string) => {
                 setLevel(val);
                 setStep("course");
               }}
@@ -55,9 +72,10 @@ export default function PraticeQuestion() {
             <CourseModal
               level={level}
               courses={
-                questions.find((item) => item.level === level)?.courses || []
+                questions.find((item: LevelData) => item.level === level)
+                  ?.courses || []
               }
-              onSelect={(val) => {
+              onSelect={(val: string) => {
                 setCourse(val);
                 setStep("settings");
               }}

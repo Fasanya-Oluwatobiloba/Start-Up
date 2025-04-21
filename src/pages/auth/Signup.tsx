@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router"; // changed from "react-router"
 import start from "../../assets/start.png";
 import google from "../../assets/google.png";
 import faculties from "../../util/Department.js";
@@ -18,37 +18,40 @@ function Signup() {
     "400 Level",
     "500 Level",
   ];
+
   const { setName, setDepartment, setFaculty, setLevel } = useAuth();
   const navigate = useNavigate();
 
-  const handleFacultyChange = (e: React.FormEvent) => {
+  const handleFacultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFaculty(e.target.value);
-    setSelectedDepartment(""); // Reset department when faculty changes
+    setSelectedDepartment("");
   };
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (selectedDepartment) {
-      localStorage.setItem("userDepartment", selectedDepartment); // Save department
-    } else {
-      alert("Please select a department.");
-    }
 
     if (inputUsername.trim() === "") {
       alert("Please enter a username");
       return;
     }
 
-    setName(inputUsername); // Store the username globally
+    if (!selectedDepartment) {
+      alert("Please select a department.");
+      return;
+    }
+
+    // Save user data to context and localStorage
+    setName(inputUsername);
     setDepartment(selectedDepartment);
     setFaculty(selectedFaculty);
-    setLevel(selectedLevel)
-    navigate("/home"); // Redirect after login
+    setLevel(selectedLevel);
 
     localStorage.setItem("userName", inputUsername);
     localStorage.setItem("userDepartment", selectedDepartment);
     localStorage.setItem("userFaculty", selectedFaculty);
     localStorage.setItem("userLevel", selectedLevel);
+
+    navigate("/home");
   };
 
   return (
@@ -66,14 +69,11 @@ function Signup() {
         </p>
         <form onSubmit={handleSignup} className="mt-8 space-y-6">
           <div>
-            <label
-              htmlFor="firstname"
-              className="block text-base text-black font-medium"
-            >
+            <label className="block text-base text-black font-medium">
               Enter Fullname
             </label>
             <input
-              name="Firstname"
+              name="fullname"
               type="text"
               value={inputUsername}
               onChange={(e) => setInputUsername(e.target.value)}
@@ -82,10 +82,7 @@ function Signup() {
             />
           </div>
           <div>
-            <label
-              htmlFor="email"
-              className="block text-base text-black font-medium"
-            >
+            <label className="block text-base text-black font-medium">
               Use email
             </label>
             <input
@@ -96,10 +93,7 @@ function Signup() {
             />
           </div>
           <div>
-            <label
-              htmlFor="password"
-              className="block text-base text-black font-medium"
-            >
+            <label className="block text-base text-black font-medium">
               Password
             </label>
             <input
@@ -109,6 +103,8 @@ function Signup() {
               className="w-full px-3 py-2 mt-1 border-2 border-black sm:text-sm"
             />
           </div>
+
+          {/* Faculty Dropdown */}
           <div className="mb-4">
             <label className="block mb-2 text-sm font-medium">Faculty</label>
             <select
@@ -125,6 +121,8 @@ function Signup() {
               ))}
             </select>
           </div>
+
+          {/* Department Dropdown */}
           {selectedFaculty && (
             <div className="mb-4">
               <label className="block mb-2 text-sm font-medium">
@@ -147,16 +145,17 @@ function Signup() {
               </select>
             </div>
           )}
+
+          {/* Level Dropdown */}
           <div>
             <label className="block mb-2 text-sm font-medium">Level</label>
             <select
               className="w-full p-2 border-2 border-black"
               value={selectedLevel}
               onChange={(e) => setSelectedLevel(e.target.value)}
+              required
             >
-              <option value="" disabled>
-                Select Level
-              </option>
+              <option value="">Select Level</option>
               {levels.map((level, index) => (
                 <option key={index} value={level}>
                   {level}
@@ -171,6 +170,8 @@ function Signup() {
               </p>
             )}
           </div>
+
+          {/* Keep me signed in */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -187,6 +188,8 @@ function Signup() {
               </label>
             </div>
           </div>
+
+          {/* Submit Button */}
           <div>
             <button
               type="submit"
@@ -195,6 +198,8 @@ function Signup() {
               Sign up
             </button>
           </div>
+
+          {/* Google Image */}
           <img src={google} className="w-20 mx-auto my-12" />
         </form>
       </div>

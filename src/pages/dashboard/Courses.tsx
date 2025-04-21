@@ -1,62 +1,86 @@
 import { useState, useEffect } from "react";
-import Courses from "../../util/CourseOutine.js"; // Import course data
+import Courses from "../../util/CourseOutine.js"; // Assuming the data here is JS. If you convert it to TS, we can strongly type it.
 import { useAuth } from "../../stores/Context";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import back from "../../assets/back.png";
 
+// ==== Type Definitions ====
+type Course = {
+  code: string;
+  title: string;
+  semester: string;
+  synopsis: string;
+};
+
+type Level = {
+  level: string;
+  courses: Course[];
+};
+
+type Department = {
+  name: string;
+  levels: Level[];
+};
+
+type AuthContextType = {
+  department: string | null;
+  setDepartment: (value: string) => void;
+};
+
+// ==== Component ====
 const CoursePage = () => {
-  const [selectedLevel, setSelectedLevel] = useState("100 Level");
-  const [selectedSemester, setSelectedSemester] = useState("1st Semester");
-  const [visibleCourses, setVisibleCourses] = useState([]);
-  const [openSynopsisIndex, setOpenSynopsisIndex] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState<string>("100 Level");
+  const [selectedSemester, setSelectedSemester] = useState<string>("1st Semester");
+  const [visibleCourses, setVisibleCourses] = useState<Course[]>([]);
+  const [openSynopsisIndex, setOpenSynopsisIndex] = useState<number | null>(null);
 
-  const { department, setDepartment } = useAuth(); // Get department from context
-  const [userCourses, setUserCourses] = useState();
+  const { department, setDepartment } = useAuth() as AuthContextType;
+  const [userCourses, setUserCourses] = useState<Level[] | undefined>();
 
-  // Load stored values on component mount
+  // Load stored department on mount
   useEffect(() => {
     const storedDepartment = localStorage.getItem("userDepartment");
-
     if (storedDepartment) setDepartment(storedDepartment);
   }, [setDepartment]);
 
-  // Load department courses
+  // Load department-specific courses
   useEffect(() => {
     if (department) {
-      const deptData = Courses.find((dept) => dept.name === department);
+      const deptData = (Courses as Department[]).find(
+        (dept) => dept.name === department
+      );
       if (deptData) {
         setUserCourses(deptData.levels);
       }
     }
   }, [department]);
 
-  // Load courses for selected level and semester
+  // Load visible courses when level/semester/userCourses changes
   useEffect(() => {
     if (userCourses) {
       loadCourses(selectedLevel, selectedSemester);
     }
   }, [selectedLevel, selectedSemester, userCourses]);
 
-  const loadCourses = (level, semester) => {
-    const levelData = userCourses.find((lvl) => lvl.level === level);
+  const loadCourses = (level: string, semester: string) => {
+    const levelData = userCourses?.find((lvl) => lvl.level === level);
     if (levelData) {
       const filteredCourses = levelData.courses.filter(
         (course) => course.semester === semester
       );
       setVisibleCourses(filteredCourses);
-      setOpenSynopsisIndex(null); // Reset synopsis when switching levels or semesters
+      setOpenSynopsisIndex(null);
     } else {
       setVisibleCourses([]);
     }
   };
 
-  const toggleSynopsis = (index) => {
+  const toggleSynopsis = (index: number) => {
     setOpenSynopsisIndex(openSynopsisIndex === index ? null : index);
   };
 
   return (
     <div className="flex justify-center">
-      
       <div className="bg-purple-200 shadow-2xl border-4 border-gray-300 w-full min-h-screen">
         <div>
           <div className="flex items-center ml-1">
@@ -64,6 +88,7 @@ const CoursePage = () => {
               <img
                 src={back}
                 className="w-8 bg-purple-700 rounded-full p-2 mr-1"
+                alt="Back"
               />
             </Link>
             <h1 className="text-3xl italic pt-6 font-bold text-purple-600 mb-6">
@@ -73,25 +98,21 @@ const CoursePage = () => {
 
           {/* Level Selection Buttons */}
           <div className="flex flex-wrap gap-1 justify-center mb-4">
-            {[
-              "100 Level",
-              "200 Level",
-              "300 Level",
-              "400 Level",
-              "500 Level",
-            ].map((level) => (
-              <button
-                key={level}
-                className={`py-2 px-4 rounded-full text-sm font-semibold transition ${
-                  selectedLevel === level
-                    ? "bg-purple-600 text-white"
-                    : "bg-gray-300 text-gray-700"
-                }`}
-                onClick={() => setSelectedLevel(level)}
-              >
-                {level}
-              </button>
-            ))}
+            {["100 Level", "200 Level", "300 Level", "400 Level", "500 Level"].map(
+              (level) => (
+                <button
+                  key={level}
+                  className={`py-2 px-4 rounded-full text-sm font-semibold transition ${
+                    selectedLevel === level
+                      ? "bg-purple-600 text-white"
+                      : "bg-gray-300 text-gray-700"
+                  }`}
+                  onClick={() => setSelectedLevel(level)}
+                >
+                  {level}
+                </button>
+              )
+            )}
           </div>
 
           {/* Course List */}
@@ -112,6 +133,7 @@ const CoursePage = () => {
                 </button>
               ))}
             </div>
+
             {visibleCourses.length > 0 ? (
               visibleCourses.map((course, index) => (
                 <div
@@ -173,7 +195,6 @@ const CoursePage = () => {
               </p>
             )}
           </div>
-           {/* Footer / Bottom Navigation */}
         </div>
       </div>
     </div>

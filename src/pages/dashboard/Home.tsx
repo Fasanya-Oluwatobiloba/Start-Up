@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useAuth } from "../../stores/Context.js";
-import { useEffect, useState } from "react";
-import { Pencil } from "lucide-react"; // Import edit icon
+import { useEffect, useState, ChangeEvent } from "react";
+import { Pencil } from "lucide-react";
 import Modal from "../../UI/Modal.js";
 
 const HomePage = () => {
@@ -15,9 +15,9 @@ const HomePage = () => {
     setFaculty,
     setLevel,
   } = useAuth();
-  const [profileImage, setProfileImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const storedImage = localStorage.getItem("userImage");
+
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
@@ -33,13 +33,15 @@ const HomePage = () => {
     if (storedImage) setProfileImage(storedImage);
   }, [setName, setDepartment, setFaculty, setLevel]);
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result);
-        localStorage.setItem("userImage", reader.result);
+        if (typeof reader.result === "string") {
+          setProfileImage(reader.result);
+          localStorage.setItem("userImage", reader.result);
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -50,11 +52,9 @@ const HomePage = () => {
       {/* Navbar */}
       <header className="flex justify-between items-center px-4 py-3 bg-black text-white">
         <div className="font-bold text-xl text-gray-200 italic">DouLearn</div>
-        {/* User Info */}
+
         <div className="flex items-center space-x-2 relative">
-          {/* User Name (Desktop) */}
-          <span className="hidden md:block text-whi">John Doe</span>
-          {/* User Icon */}
+          <span className="hidden md:block text-white">{name || "Guest"}</span>
           <p
             onClick={() => setIsModalOpen(true)}
             className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center cursor-pointer"
@@ -62,48 +62,35 @@ const HomePage = () => {
             👤
           </p>
 
-          {/* Profile Dropdown */}
-          <>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-              <p className="text-center text-lg pt-4 pb-1 font-semibold rounded-t-2xl text-gray-800 bg-purple-400">
-                {name}
-              </p>
-              <div className="border-t border-black px-6 py-3">
-                <ul className="text-center text-gray-700 space-y-3">
-                  <li>
-                    <Link
-                      to="/forgot-password"
-                      className="py-2 hover:underline hover:font-semibold text-cente"
-                    >
-                      Forgot password ?
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/home"
-                      className="py-2 hover:underline hover:font-semibold text-center"
-                    >
-                      Manage your subscription
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="hover:text-red-500 font-medium cursor-pointer transition"
-                    >
-                      Log out
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </Modal>
-          </>
+          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <p className="text-center text-lg pt-4 pb-1 font-semibold rounded-t-2xl text-gray-800 bg-purple-400">
+              {name}
+            </p>
+            <div className="border-t border-black px-6 py-3">
+              <ul className="text-center text-gray-700 space-y-3">
+                <li>
+                  <Link to="/forgot-password" className="hover:underline">
+                    Forgot password?
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/home" className="hover:underline">
+                    Manage your subscription
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" className="hover:text-red-500 font-medium">
+                    Log out
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </Modal>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-grow flex flex-col items-center py-6 px-4 bg-purple-200">
-        {/* Profile Image Upload */}
         <div className="relative mt-4">
           <div className="relative">
             {profileImage ? (
@@ -118,7 +105,6 @@ const HomePage = () => {
               </div>
             )}
 
-            {/* Edit Icon */}
             {profileImage && (
               <label className="absolute bottom-1 right-1 bg-purple-600 text-white p-1 rounded-full shadow-lg cursor-pointer hover:bg-purple-700 transition">
                 <Pencil size={16} />
@@ -132,7 +118,7 @@ const HomePage = () => {
             )}
           </div>
         </div>
-        {/* Upload Button - Hidden Once Image is Uploaded */}
+
         {!profileImage && (
           <label className="mt-2 bg-purple-600 text-white px-2 py-1 rounded-full text-sm cursor-pointer hover:bg-purple-700 transition">
             Upload Image
@@ -151,22 +137,19 @@ const HomePage = () => {
 
         <div className="mt-12 text-gray-700 text-xl font-medium">
           <p>
-            {" "}
-            <span className="text-purple-700 text-2xl mb-5">Faculty:</span>{" "}
+            <span className="text-purple-700 text-2xl">Faculty:</span>{" "}
             {faculty}
           </p>
-          <br></br>
+          <br />
           <p>
-            {" "}
-            <span className="text-purple-700 text-2xl mb-5">Dept:</span>{" "}
+            <span className="text-purple-700 text-2xl">Dept:</span>{" "}
             {department}
-          </p>{" "}
-          <br></br>
+          </p>
+          <br />
           <p>
-            {" "}
             <span className="text-purple-700 text-2xl">Level:</span> {level}
-          </p>{" "}
-          <br></br>
+          </p>
+          <br />
         </div>
 
         <Link
@@ -177,7 +160,7 @@ const HomePage = () => {
         </Link>
       </main>
 
-      {/* Footer / Bottom Navigation */}
+      {/* Footer */}
       <footer className="bg-purple-600 text-white fixed bottom-0 right-0 left-0">
         <div className="flex justify-around items-center py-5">
           <Link to="/home" className="flex flex-col font-bold items-center text-xs">
@@ -190,12 +173,12 @@ const HomePage = () => {
           </Link>
           <Link
             to="/pratice-question"
-            className="flex flex-col font-bold items-center text-xs bg-purple-600"
+            className="flex flex-col font-bold items-center text-xs"
           >
             <i className="fas fa-briefcase text-2xl"></i>
             MOCK CBT
           </Link>
-          <button className="flex flex-col font-bold items-center text-xs bg-purple-600">
+          <button className="flex flex-col font-bold items-center text-xs">
             <i className="fas fa-briefcase text-2xl"></i>
             OTHERS
           </button>
