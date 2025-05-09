@@ -46,14 +46,16 @@ export default function PracticeQuestion() {
   const [step, setStep] = useState<"level" | "course" | "settings">("level");
   const [level, setLevel] = useState<string>("");
   const [course, setCourse] = useState<string>("");
-  const [numQuestions, setNumQuestions] = useState<number>(10);
+  const [numQuestions, setNumQuestions] = useState<number>();
   const [startTest, setStartTest] = useState<boolean>(false);
 
   const handleStart = () => {
     setStartTest(true);
   };
 
-  const filteredQuestions = getQuestions(level, course).slice(0, numQuestions);
+  const filteredQuestions = getQuestions(level, course)
+  .sort(() => Math.random() - 0.5)
+  .slice(0, numQuestions);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
