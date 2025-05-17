@@ -96,7 +96,7 @@ const AddProduct = () => {
             Cancel
           </button></Link> 
           <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
-            Save
+            Post
           </button>
         </div>
       </div>

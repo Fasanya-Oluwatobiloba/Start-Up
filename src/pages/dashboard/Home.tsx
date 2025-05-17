@@ -1,51 +1,52 @@
 import { Link } from "react-router";
 import { useAuth } from "../../stores/Context.js";
-import { useEffect, useState, ChangeEvent } from "react";
+// import { useEffect, useState, ChangeEvent } from "react";
+import { useState } from "react";
 import Modal from "../../UI/Modal.js";
 import airplane from "../../assets/airplane.jpg";
 
 const HomePage = () => {
   const {
     name,
-    department,
-    faculty,
-    level,
-    setName,
-    setDepartment,
-    setFaculty,
-    setLevel,
+    // department,
+    // faculty,
+    // level,
+    // setName,
+    // setDepartment,
+    // setFaculty,
+    // setLevel,
   } = useAuth();
 
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  // const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    const storedName = localStorage.getItem("userName");
-    const storedDepartment = localStorage.getItem("userDepartment");
-    const storedFaculty = localStorage.getItem("userFaculty");
-    const storedLevel = localStorage.getItem("userLevel");
-    const storedImage = localStorage.getItem("userImage");
+  // useEffect(() => {
+  //   const storedName = localStorage.getItem("userName");
+  //   const storedDepartment = localStorage.getItem("userDepartment");
+  //   const storedFaculty = localStorage.getItem("userFaculty");
+  //   const storedLevel = localStorage.getItem("userLevel");
+  //   const storedImage = localStorage.getItem("userImage");
 
-    if (storedName) setName(storedName);
-    if (storedDepartment) setDepartment(storedDepartment);
-    if (storedFaculty) setFaculty(storedFaculty);
-    if (storedLevel) setLevel(storedLevel);
-    if (storedImage) setProfileImage(storedImage);
-  }, [setName, setDepartment, setFaculty, setLevel]);
+  //   if (storedName) setName(storedName);
+  //   if (storedDepartment) setDepartment(storedDepartment);
+  //   if (storedFaculty) setFaculty(storedFaculty);
+  //   if (storedLevel) setLevel(storedLevel);
+  //   if (storedImage) setProfileImage(storedImage);
+  // }, [setName, setDepartment, setFaculty, setLevel]);
 
-  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setProfileImage(reader.result);
-          localStorage.setItem("userImage", reader.result);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       if (typeof reader.result === "string") {
+  //         setProfileImage(reader.result);
+  //         localStorage.setItem("userImage", reader.result);
+  //       }
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   return (
     <div>
@@ -101,12 +102,18 @@ const HomePage = () => {
       {/* Main Content */}
       <main className="px-4 bg-gray-200 pb-20">
         <h1 className="text-center py-3 pb-6">👋 Welcome, back Scholar!!</h1>
-        <div className="flex items-center gap-2">
-          <Link to="/courses" className="bg-white hover:bg-gray-100 rounded-lg p-4 w-[120px]">
+        <div className="flex items-center justify-between gap-2">
+          <Link
+            to="/courses"
+            className="bg-white hover:bg-gray-100 rounded-lg p-4 w-[120px]"
+          >
             <p className="text-center">📖</p>
             <p className="text-center text-sm">Study Hub</p>
           </Link>
-          <Link to="/market" className="bg-white hover:bg-gray-100 rounded-lg p-4 w-[120px]">
+          <Link
+            to="/market"
+            className="bg-white hover:bg-gray-100 rounded-lg p-4 w-[120px]"
+          >
             <p className="text-center">🏦</p>
             <p className="text-center text-sm">Marketplace</p>
           </Link>
@@ -118,40 +125,79 @@ const HomePage = () => {
         {/*Markets*/}
         <div className="flex justify-between items-center pt-6 pb-4">
           <h2 className="font-semibold text-xl">🔥 Hot Deals</h2>
-          <Link to="/market" className="text-base hover:underline text-blue-500">see all</Link>
+          <Link
+            to="/market"
+            className="text-base hover:underline text-blue-500"
+          >
+            see all
+          </Link>
         </div>
         <div className="flex gap-2 overflow-x-auto whitespace-nowrap">
-          <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
-            <img src={airplane} alt="Airplane" className="w-28 h-24 mx-auto" />
-            <p className="font-semibold text-sm">Airplane</p>
-            <p className="text-sm font-bold text-green-600">#700.00</p>
-          </div>
-          <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
-            <img src={airplane} alt="Airplane" className="w-28 h-24 mx-auto" />
-            <p className="font-semibold text-sm">Airplane</p>
-            <p className="text-sm font-bold text-green-600">#700.00</p>
-          </div>
-          <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
-            <img src={airplane} alt="Airplane" className="w-28 h-24 mx-auto" />
-            <p className="font-semibold text-sm">Airplane</p>
-            <p className="text-sm font-bold text-green-600">#700.00</p>
-          </div>
-          <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
-            <img src={airplane} alt="Airplane" className="w-28 h-24 mx-auto" />
-            <p className="font-semibold text-sm">Airplane</p>
-            <p className="text-sm font-bold text-green-600">#700.00</p>
-          </div>
-          <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
-            <img src={airplane} alt="Airplane" className="w-28 h-24 mx-auto" />
-            <p className="font-semibold text-sm">Airplane</p>
-            <p className="text-sm font-bold text-green-600">#700.00</p>
-          </div>
+          <Link to="/viewproduct">
+            <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
+              <img
+                src={airplane}
+                alt="Airplane"
+                className="w-28 h-24 mx-auto"
+              />
+              <p className="font-semibold text-sm">Airplane</p>
+              <p className="text-sm font-bold text-green-600">#700.00</p>
+            </div>
+          </Link>
+          <Link to="/viewproduct">
+            <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
+              <img
+                src={airplane}
+                alt="Airplane"
+                className="w-28 h-24 mx-auto"
+              />
+              <p className="font-semibold text-sm">Airplane</p>
+              <p className="text-sm font-bold text-green-600">#700.00</p>
+            </div>
+          </Link>
+          <Link to="/viewproduct">
+            <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
+              <img
+                src={airplane}
+                alt="Airplane"
+                className="w-28 h-24 mx-auto"
+              />
+              <p className="font-semibold text-sm">Airplane</p>
+              <p className="text-sm font-bold text-green-600">#700.00</p>
+            </div>
+          </Link>
+          <Link to="/viewproduct">
+            <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
+              <img
+                src={airplane}
+                alt="Airplane"
+                className="w-28 h-24 mx-auto"
+              />
+              <p className="font-semibold text-sm">Airplane</p>
+              <p className="text-sm font-bold text-green-600">#700.00</p>
+            </div>
+          </Link>
+          <Link to="/viewproduct">
+            <div className="rounded-xl shadow-sm p-2 min-w-[130px] overflow-hidden my-2 mx-1 bg-gray-300 transition-transform duration-200 ease-in-out hover:scale-105 hover:rounded-xl">
+              <img
+                src={airplane}
+                alt="Airplane"
+                className="w-28 h-24 mx-auto"
+              />
+              <p className="font-semibold text-sm">Airplane</p>
+              <p className="text-sm font-bold text-green-600">#700.00</p>
+            </div>
+          </Link>
         </div>
 
         {/*School Announcement*/}
         <div className="flex justify-between items-center my-6">
           <h2 className="font-semibold text-lg">📢 School Announcements</h2>
-          <Link to="/announcement"><button className="text-base text-blue-500 hover:underline">see all</button></Link>
+          <Link to="/announcement">
+            <button className="text-base text-blue-500 hover:underline">
+              see all
+            </button>
+          </Link>
         </div>
         <div>
           <div className="rounded-xl bg-white p-3 mb-4 shadow-md">
@@ -175,12 +221,16 @@ const HomePage = () => {
         {/*Lost and Found*/}
         <div className="flex justify-between items-center my-6">
           <h2 className="font-semibold text-lg">🚫 Lost & Found</h2>
-          <Link to="/lostfound"><button className="text-base text-blue-500 hover:underline">see all</button></Link>
+          <Link to="/lostfound">
+            <button className="text-base text-blue-500 hover:underline">
+              see all
+            </button>
+          </Link>
         </div>
         <div>
           <div className="rounded-xl bg-white p-3 mb-4 shadow-md">
             <h2 className="text-sm font-semibold text-red-500 uppercase mb-2">
-            📍 Missing ID card !!!!
+              📍 Missing ID card !!!!
             </h2>
             <p className="text-xs mb-1 text-gray-600">
               The ID card was found at EFT by the staircase, reach out to me on
@@ -190,7 +240,7 @@ const HomePage = () => {
           </div>
           <div className="rounded-xl bg-white p-3 mb-4 shadow-md">
             <h2 className="text-sm font-semibold text-red-500 uppercase mb-2">
-            📍 Missing Phone !!!!
+              📍 Missing Phone !!!!
             </h2>
             <p className="text-xs mb-1 text-gray-600">
               Samsung S21 found at old 1k cap. Reach out to me via whatsapp at
@@ -203,11 +253,17 @@ const HomePage = () => {
         {/*Mindshift*/}
         <div className="flex justify-between items-center my-6">
           <h2 className="font-semibold text-lg">📖 Mindshift</h2>
-          <Link to="/mindshift"><button className="text-base text-blue-500 hover:underline">see all</button></Link>
+          <Link to="/mindshift">
+            <button className="text-base text-blue-500 hover:underline">
+              see all
+            </button>
+          </Link>
         </div>
         <div>
           <div className="rounded-xl bg-white p-3 mb-4 shadow-md">
-            <h3 className="text-sm font-semibold text-purple-500 uppercase mb-2">🔻 What if I Fail ??</h3>
+            <h3 className="text-sm font-semibold text-purple-500 uppercase mb-2">
+              🔻 What if I Fail ??
+            </h3>
             <p className="text-xs mb-1 text-gray-600">
               Failure is not the end—it's part of the journey. Every expert once
               doubted themselves too, but they kept going. Believe in your
@@ -216,7 +272,9 @@ const HomePage = () => {
             </p>
           </div>
           <div className="rounded-xl bg-white p-3 mb-10 shadow-md">
-            <h3 className="text-sm font-semibold text-purple-500 uppercase mb-2">🔻 I am scared on how to study this course ??</h3>
+            <h3 className="text-sm font-semibold text-purple-500 uppercase mb-2">
+              🔻 I am scared on how to study this course ??
+            </h3>
             <p className="text-xs mb-1 text-gray-600">
               It’s okay to feel scared—starting something new often is. But
               remember, every master once struggled too. Take it one page, one
@@ -229,14 +287,17 @@ const HomePage = () => {
         {/*Whatsapp Channel*/}
         <div>
           <div className="rounded-xl bg-white p-3 mb-4 shadow-md">
-            <h3 className="text-sm font-semibold text-green-700 uppercase mb-2">📢 For More Info & Updates</h3>
-            <p className="text-xs mb-3 text-gray-600">Stay connected-join our official whatsApp group!</p>
-            <button className="bg-green-500 rounded-xl text-center text-white py-2 w-full">🔗 Join WhatsApp Group</button>
+            <h3 className="text-sm font-semibold text-green-700 uppercase mb-2">
+              📢 For More Info & Updates
+            </h3>
+            <p className="text-xs mb-3 text-gray-600">
+              Stay connected-join our official whatsApp group!
+            </p>
+            <button className="bg-green-500 rounded-xl text-center text-white py-2 w-full">
+              🔗 Join WhatsApp Group
+            </button>
           </div>
         </div>
-
-
-
       </main>
 
       {/* Footer */}
@@ -277,7 +338,10 @@ const HomePage = () => {
             <i className="fas fa-book text-2xl"></i>
             MARKET
           </Link>
-          <Link to="/vidLib" className="flex flex-col font-bold items-center text-[11px]">
+          <Link
+            to="/vidLib"
+            className="flex flex-col font-bold items-center text-[11px]"
+          >
             <i className="fas fa-briefcase text-2xl"></i>
             VIDEOS
           </Link>

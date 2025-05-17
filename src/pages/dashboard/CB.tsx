@@ -3,7 +3,7 @@ import LevelModal from "../../components/LevelModal";
 import CourseModal from "../../components/CourseModal";
 import QuestionSettingsModal from "../../components/QuestionSettingModal";
 import TestPage from "../../components/TestPage";
-import questions from "../../util/question.js"; // You can change to .ts if you convert the questions file
+import questions from "../../util/question.js"; // This is untyped, so we'll cast it
 
 // ==== Type Definitions ====
 type Question = {
@@ -23,13 +23,16 @@ type LevelData = {
   courses: Course[];
 };
 
+// === Cast questions to proper type ===
+const questionsTyped = questions as LevelData[];
+
 // ==== Helper Function ====
 const getQuestions = (level: string, courseCode: string): Question[] => {
   console.log("Selected Level:", level);
   console.log("Selected Course:", courseCode);
 
-  const levelData: LevelData | undefined = questions.find(
-    (item: LevelData) => item.level === level
+  const levelData: LevelData | undefined = questionsTyped.find(
+    (item) => item.level === level
   );
   console.log("Level Data:", levelData);
 
@@ -46,7 +49,7 @@ export default function PracticeQuestion() {
   const [step, setStep] = useState<"level" | "course" | "settings">("level");
   const [level, setLevel] = useState<string>("");
   const [course, setCourse] = useState<string>("");
-  const [numQuestions, setNumQuestions] = useState<number>();
+  const [numQuestions, setNumQuestions] = useState<number>(0);
   const [startTest, setStartTest] = useState<boolean>(false);
 
   const handleStart = () => {
@@ -54,8 +57,8 @@ export default function PracticeQuestion() {
   };
 
   const filteredQuestions = getQuestions(level, course)
-  .sort(() => Math.random() - 0.5)
-  .slice(0, numQuestions);
+    .sort(() => Math.random() - 0.5)
+    .slice(0, numQuestions);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -74,8 +77,7 @@ export default function PracticeQuestion() {
             <CourseModal
               level={level}
               courses={
-                questions.find((item: LevelData) => item.level === level)
-                  ?.courses || []
+                questionsTyped.find((item) => item.level === level)?.courses || []
               }
               onSelect={(val: string) => {
                 setCourse(val);

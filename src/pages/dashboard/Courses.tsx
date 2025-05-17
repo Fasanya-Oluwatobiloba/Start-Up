@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Courses from "../../util/CourseOutine.js"; // Assuming the data here is JS. If you convert it to TS, we can strongly type it.
+import Courses from "../../util/CourseOutine.ts";
 import { useAuth } from "../../stores/Context";
 import { Link } from "react-router";
 import back from "../../assets/back.png";

@@ -1,12 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router";
 
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-  image: string;
-};
 
 const categories = [
   "All",
@@ -21,38 +15,9 @@ const categories = [
   "Others",
 ];
 
-const initialProducts: Product[] = [
-  {
-    id: 1,
-    name: "Normal Scarf",
-    price: 2000,
-    category: "Fashion & Accessories",
-    image: "scarf.jpg",
-  },
-  {
-    id: 2,
-    name: "Face mask",
-    price: 800,
-    category: "Fashion & Accessories",
-    image: "facemask.jpg",
-  },
-  {
-    id: 3,
-    name: "Perfume oil",
-    price: 700,
-    category: "Fashion & Accessories",
-    image: "perfume.jpg",
-  },
-  {
-    id: 4,
-    name: "Jersey scarf",
-    price: 3500,
-    category: "Fashion & Accessories",
-    image: "jersey.jpg",
-  },
-];
-
 const Market = () => {
+  const [selected, setSelected] = useState("All")
+
   return (
     <div>
       <h1 className="text-center text-2xl py-4 bg-purple-500 font-bold">
@@ -73,7 +38,8 @@ const Market = () => {
             return (
               <button
                 key={prod}
-                className="border-1 bg-white active:bg-blue-500 rounded-full px-4 py-2 whitespace-nowrap font-medium"
+                onClick={() => { setSelected(prod)}}
+                className={`border-1  rounded-full px-4 py-2 whitespace-nowrap font-medium ${selected === prod ? "bg-purple-400 " : "bg-white "}`}
               >
                 {prod}
               </button>

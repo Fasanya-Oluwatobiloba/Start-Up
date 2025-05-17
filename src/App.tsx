@@ -15,6 +15,7 @@ import Mindshift from "./pages/pages/Mindshift";
 import AddMindshift from "./components/AddMindshift";
 import VideoLibrary from "./pages/dashboard/Videos";
 import AddVideo from "./components/AddVideo";
+import ProductDetailPage from "./components/ViewProduct";
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
         <Route path={"/addMindshift"} element={<AddMindshift />} />
         <Route path={"/vidLib"} element={<VideoLibrary />} />
         <Route path={"/addVideo"} element={<AddVideo />} />
+        <Route path={"/viewproduct"} element={<ProductDetailPage />} />
       </Routes>
     </Router>
   );

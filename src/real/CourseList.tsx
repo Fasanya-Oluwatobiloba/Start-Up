@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
-import faculties from "../util/Department.js"; // Import the array
+import { useEffect, useState } from "react";
+import faculties from "../util/Department.ts"; // Import the array
 
 const CourseList = () => {
-  const [department, setDepartment] = useState("");
-  const [courses, setCourses] = useState([]);
+  const [department, setDepartment] = useState<string>("");
+  const [courses, setCourses] = useState<string[]>([]); // typed as string[]
 
   useEffect(() => {
-    // Get department from local storage
     const userDepartment = localStorage.getItem("userDepartment");
-    setDepartment(userDepartment);
-
     if (userDepartment) {
-      // Find the faculty containing the department
+      setDepartment(userDepartment);
+
       const faculty = faculties.find((faculty) =>
         faculty.departments.includes(userDepartment)
       );
       setCourses(faculty ? faculty.departments : []);
+    } else {
+      setDepartment("");
+      setCourses([]);
     }
   }, []);
 
