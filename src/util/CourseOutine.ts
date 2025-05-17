@@ -1,4 +1,4 @@
-export const Courses = [
+const Courses = [
 	//SBMS
 	{
 		name: "Anatomy",
@@ -9221,3 +9221,4 @@ export const Courses = [
 		],
 	}
 ]
+export default Courses;
